@@ -71,6 +71,7 @@
             padding: 60px 0 80px;
             text-align: center;
             position: relative; z-index: 1;
+            background: #fff;
         }
 
         .hero h1 {
@@ -81,6 +82,7 @@
             letter-spacing: -0.03em;
             text-transform: uppercase;
             margin-bottom: 24px;
+            color: var(--dark);
         }
 
         .text-gradient {
@@ -93,8 +95,9 @@
             font-size: clamp(1rem, 2.5vw, 1.6rem);
             color: rgba(18,18,18,0.65);
             max-width: 700px; margin: 0 auto 48px;
-            line-height: 1.4; font-weight: 500;
+            line-height: 1.5; font-weight: 500;
         }
+        .hero-sub strong { color: var(--dark); font-weight: 800; }
 
         /* ========== VIDEO PLAYER ========== */
         .video-wrapper {
@@ -233,7 +236,7 @@
         }
         .countdown-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 50px rgba(255,0,122,0.1);
+            box-shadow: 0 20px 50px rgba(255,0,122,0.15);
         }
 
         .countdown-num {
@@ -260,7 +263,7 @@
         .section-eyebrow {
             font-size: 0.65rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.6em;
-            color: rgba(255,255,255,0.6); margin-bottom: 16px;
+            color: rgba(255,255,255,0.85); margin-bottom: 16px;
         }
 
         .section-title {
@@ -271,7 +274,7 @@
             letter-spacing: -0.02em;
             margin-bottom: 60px;
         }
-        .section-title span { color: rgba(255,255,255,0.35); }
+        .section-title span { color: #fff; }
 
         .cards-grid {
             display: grid;
@@ -283,16 +286,17 @@
             .cards-grid { grid-template-columns: 1fr; }
             .countdown-grid { grid-template-columns: repeat(2, 1fr); }
             .benefits-grid { grid-template-columns: 1fr !important; }
+            .live-badge { display: none; }
         }
 
         .category-card {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 28px; padding: 40px;
             transition: background 0.3s ease, transform 0.3s ease;
         }
         .category-card:hover {
-            background: rgba(255,255,255,0.22);
+            background: rgba(0,0,0,0.38);
             transform: translateY(-6px);
         }
 
@@ -311,7 +315,7 @@
             letter-spacing: -0.02em; margin-bottom: 12px;
         }
 
-        .card-desc { color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px; }
+        .card-desc { color: rgba(255,255,255,0.88); font-size: 0.9rem; line-height: 1.6; margin-bottom: 24px; }
 
         .card-line {
             height: 3px; width: 48px;
@@ -341,8 +345,8 @@
         }
 
         .benefit-card {
-            background: #fff;
-            border: 1px solid rgba(0,0,0,0.06);
+            background: #e8e8ee;
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 24px; padding: 32px 24px;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
@@ -350,7 +354,7 @@
             transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
         .benefit-card:hover {
-            box-shadow: 0 20px 60px rgba(255,0,122,0.1);
+            box-shadow: 0 20px 60px rgba(255,0,122,0.15);
             transform: translateY(-4px);
         }
 
@@ -359,7 +363,7 @@
         .benefit-text {
             font-size: 0.7rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.08em;
-            color: rgba(18,18,18,0.55); line-height: 1.6; text-align: center;
+            color: rgba(18,18,18,0.75); line-height: 1.6; text-align: center;
         }
         .benefit-text strong { color: var(--dark); }
 
@@ -401,6 +405,21 @@
         .delay-2 { animation-delay: 0.3s; }
         .delay-3 { animation-delay: 0.45s; }
         .delay-4 { animation-delay: 0.6s; }
+
+        /* ========== HERO SEAL ========== */
+        .hero-seal {
+            display: block;
+            width: clamp(120px, 22vw, 220px);
+            margin: 0 auto 32px;
+            filter: drop-shadow(0 12px 32px rgba(255,0,122,0.35)) drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+            animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) forwards, floatSeal 4s ease-in-out infinite;
+            animation-delay: 0s, 1s;
+            opacity: 0;
+        }
+        @keyframes floatSeal {
+            0%, 100% { transform: translateY(0px) rotate(-1deg); }
+            50%       { transform: translateY(-10px) rotate(1deg); }
+        }
     </style>
 </head>
 <body>
@@ -412,13 +431,16 @@
     <!-- ===== HERO ===== -->
     <section class="hero">
         <div class="container">
+            <!-- SELO -->
+            <img src="SELO 3D  renova casa.png" alt="Selo Renova Casa" class="hero-seal">
+
             <h1 class="fade-up">
                 Vem aí o<br>
-                <span class="text-gradient">Renova Casa!</span>
+                <span class="text-gradient">Renova Casa 1001!</span>
             </h1>
 
             <p class="hero-sub fade-up delay-1">
-                Maiores ofertas de <strong>Móveis, Eletro e Utilidades</strong><br>da Cidade Ocidental
+                Os melhores preços em <strong>Móveis, Eletro e Utilidades</strong><br>da Cidade Ocidental!
             </p>
 
             <!-- VIDEO -->
@@ -525,7 +547,7 @@
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <iconify-icon icon="solar:camera-bold" class="benefit-icon"></iconify-icon>
-                    <p class="benefit-text">A live de <strong>RENOVA CASA</strong> acontecerá no Instagram dia 07 de Maio às 20H</p>
+                    <p class="benefit-text">Do feirão de <strong>RENOVA CASA</strong> acontecerá no Instagram dia 07 de Maio às 20H</p>
                 </div>
                 <div class="benefit-card">
                     <iconify-icon icon="solar:delivery-bold" class="benefit-icon"></iconify-icon>
@@ -552,7 +574,7 @@
                 </a>
                 <p class="cta-caption">
                     Toque no botão para participar do maior<br>
-                    <strong>ESQUENTA RENOVA CASA DE MÓVEIS, ELETRO E UTILIDADES.</strong><br>
+                    <strong>FEIRÃO DE RENOVA CASA DE MÓVEIS, ELETRO E UTILIDADES.</strong><br>
                     Você terá acesso a preços nunca vistos antes na história da 1001.
                 </p>
             </div>
