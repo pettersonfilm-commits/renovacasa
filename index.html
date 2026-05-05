@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1001 RENOVA CASA | Grupo VIP Ocidental</title>
+    
+    <!-- Design System Foundation (Imported from design_system.html specs) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        magenta: '#FF007A',
+                        orange: '#FF8A00',
+                        dark: '#121212',
+                        light: '#FDFDFD',
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --color-magenta: #FF007A;
+            --color-orange: #FF8A00;
+            --gradient-primary: linear-gradient(135deg, #FF007A 0%, #FF8A00 100%);
+            --shadow-vibrant: 0 20px 40px rgba(255, 0, 122, 0.2);
+        }
+
+        /* Core Styles from Design System */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdfdfd; overflow-x: hidden; }
+        
+        .bg-pattern::before {
+            content: ""; position: fixed; inset: 0;
+            background-image: radial-gradient(var(--color-magenta) 0.5px, transparent 0.5px);
+            background-size: 30px 30px; opacity: 0.1; z-index: -10;
+        }
+
+        .text-gradient { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .glass-3d {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border-radius: 32px;
+        }
+
+        /* Enhanced Dynamic Background */
+        .mesh-container {
+            position: fixed; inset: 0; z-index: -10;
+            overflow: hidden; pointer-events: none;
+            background: #fdfdfd;
+        }
+        .hero-orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(100px); opacity: 0.2;
+            mix-blend-mode: multiply;
+        }
+        .orb-1 { width: 600px; height: 600px; background: var(--color-magenta); top: -10%; left: -10%; }
+        .orb-2 { width: 500px; height: 500px; background: var(--color-orange); bottom: -10%; right: -10%; }
+        .orb-3 { width: 400px; height: 400px; background: var(--color-magenta); top: 40%; right: 10%; opacity: 0.1; }
+        .orb-4 { width: 300px; height: 300px; background: var(--color-orange); bottom: 20%; left: 10%; opacity: 0.1; }
+
+        /* Magnetic & Vibrant Button */
+        .magnetic-wrap { display: inline-block; position: relative; }
+        .btn-cta {
+            position: relative; padding: 1.25rem 3rem; border-radius: 99px;
+            background: #121212; color: white; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.85rem;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .btn-cta:hover { transform: scale(1.05); box-shadow: var(--shadow-vibrant); }
+        .btn-cta::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--gradient-primary); transform: scaleX(0);
+            transform-origin: right; transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+            z-index: -1;
+        }
+        .btn-cta:hover::before { transform: scaleX(1); transform-origin: left; }
+
+        /* Refined Tech Countdown Cards */
+        .countdown-card {
+            position: relative; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+        .countdown-inner {
+            position: relative; z-index: 1; 
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px; padding: 2.5rem 1.5rem; 
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03), inset 0 0 20px rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+        .countdown-glow {
+            position: absolute; inset: -2px; 
+            background: var(--gradient-primary);
+            border-radius: 30px; z-index: 0; opacity: 0; 
+            transition: opacity 0.4s ease;
+            filter: blur(15px);
+        }
+        .countdown-card:hover .countdown-glow { opacity: 0.4; }
+        
+        /* Decorative Tech Accents */
+        .countdown-inner::before {
+            content: ""; position: absolute; top: 12px; right: 12px;
+            width: 4px; height: 4px; background: var(--color-magenta);
+            border-radius: 50%; box-shadow: 0 0 10px var(--color-magenta);
+        }
+        .countdown-inner::after {
+            content: ""; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 3px; background: var(--gradient-primary);
+            transform: scaleX(0.3); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .countdown-card:hover .countdown-inner::after { transform: scaleX(1); }
+
+        /* Animated Underline */
+        .animated-underline {
+            position: relative;
+            text-decoration: none !important;
+        }
+        .animated-underline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 0;
+            height: 4px;
+            background: var(--color-magenta);
+            border-radius: 2px;
+            transition: none;
+        }
+    </style>
+</head>
+<body class="bg-pattern">
+    <!-- Enhanced Mesh Background -->
+    <div class="mesh-container">
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
+        <div class="hero-orb orb-3"></div>
+        <div class="hero-orb orb-4"></div>
+    </div>
+
+    <!-- Smooth Scrolling -->
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            
+            <main class="relative min-h-[90vh] flex flex-col items-center justify-start pt-8 pb-20 overflow-hidden">
+                <div class="max-w-[1400px] mx-auto px-6 w-full text-center relative z-10">
+                    
+                    <!-- Main Headline -->
+                    <h1 class="font-outfit text-6xl md:text-8xl lg:text-[10rem] font-extrabold leading-[0.8] tracking-tighter uppercase mb-6 animate-reveal">
+                        Vem aí o<br>
+                        <span class="text-gradient">Renova Casa!</span>
+                    </h1>
+
+                    <!-- Subheadline -->
+                    <p class="text-xl md:text-3xl text-dark/70 max-w-4xl mx-auto mb-14 leading-tight font-jakarta font-medium animate-reveal delay-200">
+                        Maiores ofertas de <span class="relative inline-block text-dark font-extrabold">
+                            Móveis, eletro e utilidades
+                            <span id="hero-underline" class="absolute -bottom-2 left-0 h-1.5 w-0 bg-magenta rounded-full"></span>
+                        </span><br>da cidade ocidental
+                    </p>
+
+                    <!-- Video Showcase (Moved Up) -->
+                    <div id="hero-video-wrapper" class="relative w-full max-w-6xl mx-auto aspect-video rounded-[40px] overflow-hidden shadow-[0_60px_120px_rgba(255,0,122,0.15)] border-8 border-white bg-black/5 group">
+                        <video class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" autoplay muted loop playsinline>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-interior-of-a-living-room-41005-large.mp4" type="video/mp4">
+                        </video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 right-6 md:bottom-10 md:right-10 animate-reveal delay-500">
+                            <div class="glass-3d px-4 py-3 md:px-8 md:py-5 border-white/40 flex items-center gap-4 md:gap-6 overflow-hidden relative">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2 md:gap-3 mb-1 md:mb-1.5">
+                                        <span class="flex h-1.5 w-1.5 md:h-2 md:w-2 relative">
+                                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-magenta opacity-75"></span>
+                                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 md:h-2 md:w-2 bg-magenta"></span>
+                                        </span>
+                                        <p class="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-dark/40">Status: Ao Vivo</p>
+                                    </div>
+                                    <p class="font-outfit text-xs md:text-xl font-extrabold text-dark tracking-tighter uppercase">07 de Maio às 20h</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Primary CTA (Highest Contrast - Moved Below Video) -->
+                    <div class="flex justify-center mt-16 mb-24 animate-reveal delay-400">
+                        <div class="magnetic-wrap">
+                            <a href="https://wa.me/seu-link-aqui" target="_blank" class="btn-cta group">
+                                <iconify-icon icon="logos:whatsapp-icon" class="text-2xl"></iconify-icon>
+                                <span>Quero entrar no grupo VIP do WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mt-32 max-w-5xl mx-auto">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.5em] text-magenta mb-8 animate-reveal">Nossa live começa em:</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                        <div class="countdown-card group/card">
+                            <div class="countdown-glow"></div>
+                            <div class="countdown-inner">
+                                <span class="font-outfit text-5xl font-extrabold text-dark tracking-tighter" id="days">00</span>
+                                <span class="text-magenta text-[9px] font-bold uppercase tracking-[0.5em] mt-3">Dias</span>
+                            </div>
+                        </div>
+                        <div class="countdown-card group/card">
+                            <div class="countdown-glow"></div>
+                            <div class="countdown-inner">
+                                <span class="font-outfit text-5xl font-extrabold text-dark tracking-tighter" id="hours">00</span>
+                                <span class="text-magenta text-[9px] font-bold uppercase tracking-[0.5em] mt-3">Horas</span>
+                            </div>
+                        </div>
+                        <div class="countdown-card group/card">
+                            <div class="countdown-glow"></div>
+                            <div class="countdown-inner">
+                                <span class="font-outfit text-5xl font-extrabold text-dark tracking-tighter" id="minutes">00</span>
+                                <span class="text-magenta text-[9px] font-bold uppercase tracking-[0.5em] mt-3">Minutos</span>
+                            </div>
+                        </div>
+                        <div class="countdown-card group/card">
+                            <div class="countdown-glow"></div>
+                            <div class="countdown-inner">
+                                <span class="font-outfit text-5xl font-extrabold text-dark tracking-tighter" id="seconds">00</span>
+                                <span class="text-magenta text-[9px] font-bold uppercase tracking-[0.5em] mt-3">Segundos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Second Fold: Vibrant Categories -->
+            <section class="py-32 relative z-10 overflow-hidden" id="categories-section">
+                <!-- Colorful Gradient Background -->
+                <div class="absolute inset-0 bg-gradient-to-br from-magenta via-magenta to-orange opacity-95"></div>
+                
+                <!-- Background Pattern for Texture -->
+                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+                <div class="max-w-[1400px] mx-auto px-6 relative z-10">
+                    <div class="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+                        <div class="animate-reveal">
+                            <span class="text-[11px] font-bold uppercase tracking-[0.6em] text-white/60 mb-4 block">Variedade Inigualável</span>
+                            <h2 class="font-outfit text-5xl md:text-7xl font-extrabold text-white uppercase tracking-tighter">O que você <br><span class="text-white/40">vai encontrar</span></h2>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Category 1: Móveis -->
+                        <div class="category-card glass-3d bg-white/10 border-white/20 p-10 hover:bg-white/20 transition-all group">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-magenta group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:armchair-bold" class="text-3xl"></iconify-icon>
+                            </div>
+                            <h3 class="font-outfit text-3xl font-extrabold text-white uppercase mb-4 tracking-tighter">Móveis</h3>
+                            <p class="text-white/60 text-sm leading-relaxed mb-8">Sofás, mesas, guarda-roupas e painéis com design moderno e qualidade premium.</p>
+                            <div class="h-1 w-12 bg-white/30 rounded-full group-hover:w-full transition-all duration-500"></div>
+                        </div>
+
+                        <!-- Category 2: Eletro -->
+                        <div class="category-card glass-3d bg-white/10 border-white/20 p-10 hover:bg-white/20 transition-all group">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-magenta group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:fridge-bold" class="text-3xl"></iconify-icon>
+                            </div>
+                            <h3 class="font-outfit text-3xl font-extrabold text-white uppercase mb-4 tracking-tighter">Eletro</h3>
+                            <p class="text-white/60 text-sm leading-relaxed mb-8">Geladeiras, fogões e máquinas de lavar com tecnologia de ponta e economia.</p>
+                            <div class="h-1 w-12 bg-white/30 rounded-full group-hover:w-full transition-all duration-500"></div>
+                        </div>
+
+                        <!-- Category 3: Utilidades -->
+                        <div class="category-card glass-3d bg-white/10 border-white/20 p-10 hover:bg-white/20 transition-all group">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-magenta group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:tea-cup-bold" class="text-3xl"></iconify-icon>
+                            </div>
+                            <h3 class="font-outfit text-3xl font-extrabold text-white uppercase mb-4 tracking-tighter">Utilidades</h3>
+                            <p class="text-white/60 text-sm leading-relaxed mb-8">Tudo o que sua casa precisa para o dia a dia com praticidade e estilo.</p>
+                            <div class="h-1 w-12 bg-white/30 rounded-full group-hover:w-full transition-all duration-500"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom CTA for the section -->
+                    <div class="mt-24 text-center animate-reveal">
+                        <div class="magnetic-wrap">
+                            <a href="https://wa.me/seu-link-aqui" target="_blank" class="btn-cta group !bg-white !text-dark hover:!text-white border-2 border-white/20">
+                                <iconify-icon icon="logos:whatsapp-icon" class="text-2xl"></iconify-icon>
+                                <span>Quero entrar no grupo VIP do WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Third Fold: WhatsApp VIP Group Details -->
+            <section class="py-32 relative z-10 overflow-hidden bg-pattern border-t border-dark/5">
+                <!-- Clean background as orbs are global -->
+                <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent pointer-events-none"></div>
+                
+                <div class="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
+                    <h2 class="font-outfit text-3xl md:text-5xl font-extrabold text-dark mb-16 max-w-4xl mx-auto leading-tight animate-reveal">
+                        Dentro do Grupo de Whatsapp, você receberá em primeira mão nossas ofertas e informativos do evento.
+                    </h2>
+
+                    <!-- Benefits Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-20 animate-reveal">
+                        <!-- Benefit 1 -->
+                        <div class="glass-3d bg-white border-dark/5 p-8 flex flex-col items-center justify-center min-h-[220px] shadow-sm hover:shadow-md transition-shadow">
+                            <iconify-icon icon="solar:camera-bold" class="text-3xl text-magenta mb-5"></iconify-icon>
+                            <p class="text-[11px] font-bold text-dark/60 leading-relaxed uppercase tracking-wider">A live de <span class="text-dark font-black">RENOVA CASA</span> acontecerá no Instagram dia 07 de Maio às 20H</p>
+                        </div>
+                        <!-- Benefit 2 -->
+                        <div class="glass-3d bg-white border-dark/5 p-8 flex flex-col items-center justify-center min-h-[220px] shadow-sm hover:shadow-md transition-shadow">
+                            <iconify-icon icon="solar:delivery-bold" class="text-3xl text-magenta mb-5"></iconify-icon>
+                            <p class="text-[11px] font-bold text-dark/60 leading-relaxed uppercase tracking-wider">Compre do conforto da sua casa, enviaremos para toda a <span class="text-dark font-black">Cidade Ocidental</span></p>
+                        </div>
+                        <!-- Benefit 3 -->
+                        <div class="glass-3d bg-white border-dark/5 p-8 flex flex-col items-center justify-center min-h-[220px] shadow-sm hover:shadow-md transition-shadow">
+                            <iconify-icon icon="solar:shop-bold" class="text-3xl text-magenta mb-5"></iconify-icon>
+                            <p class="text-[11px] font-bold text-dark/60 leading-relaxed uppercase tracking-wider">Nas lojas físicas você poderá comprar nas condições de <span class="text-dark font-black">RENOVA CASA</span> nos dias 07 a 10 de Maio.</p>
+                        </div>
+                        <!-- Benefit 4 -->
+                        <div class="glass-3d bg-white border-dark/5 p-8 flex flex-col items-center justify-center min-h-[220px] shadow-sm hover:shadow-md transition-shadow">
+                            <iconify-icon icon="solar:verified-check-bold" class="text-3xl text-magenta mb-5"></iconify-icon>
+                            <p class="text-[11px] font-bold text-dark/60 leading-relaxed uppercase tracking-wider">Garantia de melhores preços do Brasil e entregas dentro do prazo estabelecido.</p>
+                        </div>
+                        <!-- Benefit 5 -->
+                        <div class="glass-3d bg-white border-dark/5 p-8 flex flex-col items-center justify-center min-h-[220px] shadow-sm hover:shadow-md transition-shadow">
+                            <iconify-icon icon="solar:hand-shake-bold" class="text-3xl text-magenta mb-5"></iconify-icon>
+                            <p class="text-[11px] font-bold text-dark/60 leading-relaxed uppercase tracking-wider">Compromisso de Ofertas de verdade, válidas somente no período do <span class="text-dark font-black">RENOVA CASA</span>.</p>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button (Standardized) -->
+                    <div class="flex justify-center mb-16 animate-reveal">
+                        <div class="magnetic-wrap">
+                            <a href="https://wa.me/seu-link-aqui" target="_blank" class="btn-cta group">
+                                <iconify-icon icon="logos:whatsapp-icon" class="text-2xl"></iconify-icon>
+                                <span>entrar no grupo agora.</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Final Footer Text -->
+                    <div class="max-w-4xl mx-auto animate-reveal">
+                        <p class="text-dark/40 font-jakarta font-bold text-sm md:text-lg leading-relaxed uppercase tracking-[0.2em]">
+                            Toque no botão para participar do maior <br>
+                            <span class="text-dark font-black">ESQUENTA RENOVA CASA DE MÓVEIS, ELETRO E UTILIDADES.</span><br>
+                            Você terá acesso a preços nunca vistos antes na história da 1001.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Scripts Integration -->
+    <script>
+        // Lenis Smooth Scroll
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // GSAP Entrance Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Dynamic Background Orbs Animation
+        gsap.to(".orb-1", { x: "30vw", y: "20vh", duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        gsap.to(".orb-2", { x: "-20vw", y: "-30vh", duration: 18, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 1 });
+        gsap.to(".orb-3", { x: "-10vw", y: "40vh", duration: 20, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 2 });
+        gsap.to(".orb-4", { x: "40vw", y: "-10vh", duration: 22, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 3 });
+
+        // Global Reveal Animation
+        document.querySelectorAll('.animate-reveal').forEach((el, i) => {
+            gsap.from(el, {
+                y: 80,
+                opacity: 0,
+                scale: 1.02,
+                filter: "blur(15px)",
+                duration: 1.5,
+                delay: i * 0.1,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 95%"
+                },
+                clearProps: "all"
+            });
+        });
+
+        // Cinematic Video Reveal
+        gsap.from("#hero-video-wrapper", {
+            clipPath: "inset(20% 20% 20% 20% round 40px)",
+            opacity: 0,
+            scale: 0.9,
+            filter: "blur(30px)",
+            duration: 2.5,
+            delay: 0.4,
+            ease: "expo.out",
+            clearProps: "all"
+        });
+
+        // Refined Premium Entrance for Countdown
+        gsap.from(".countdown-card", {
+            y: 50,
+            opacity: 0,
+            scale: 0.98,
+            filter: "blur(15px)",
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".countdown-card",
+                start: "top 90%"
+            },
+            clearProps: "all"
+        });
+        
+        // Refined Premium Entrance for Category Cards
+        gsap.from(".category-card", {
+            y: 80,
+            opacity: 0,
+            scale: 0.95,
+            filter: "blur(20px)",
+            duration: 1.8,
+            stagger: 0.2,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: "#categories-section",
+                start: "top 80%"
+            },
+            clearProps: "all"
+        });
+
+        // 3D Tilt for Countdown Cards
+        document.querySelectorAll('.countdown-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(card, {
+                    rotateY: x * 0.15,
+                    rotateX: -y * 0.15,
+                    transformPerspective: 1000,
+                    duration: 0.6,
+                    ease: "power3.out"
+                });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotateY: 0, rotateX: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+        // 3D Tilt for Category Cards (New Section)
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(card, {
+                    rotateY: x * 0.08,
+                    rotateX: -y * 0.08,
+                    transformPerspective: 1000,
+                    scale: 1.05,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotateY: 0,
+                    rotateX: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        });
+
+        // Magnetic Button
+        document.querySelectorAll('.magnetic-wrap').forEach(wrap => {
+            const btn = wrap.querySelector('a');
+            wrap.addEventListener('mousemove', (e) => {
+                const rect = wrap.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, { x: x * 0.4, y: y * 0.4, duration: 0.3, ease: "power2.out" });
+            });
+            wrap.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+        // Countdown Logic (Target: May 7, 2026 20:00:00)
+        const updateCountdown = () => {
+            const target = new Date("May 7, 2026 20:00:00").getTime();
+            const now = new Date().getTime();
+            const gap = target - now;
+
+            const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+            const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((gap % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d < 10 ? "0"+d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0"+h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0"+m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0"+s : s;
+        };
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        // Underline Animation
+        gsap.to("#hero-underline", {
+            width: "100%",
+            duration: 1.5,
+            delay: 1.5,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: "#hero-underline",
+                start: "top 90%"
+            }
+        });
+    </script>
+</body>
+</html>
